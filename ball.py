@@ -14,16 +14,17 @@ done = False
 clock = pygame.time.Clock()
 
 while not done:
-    screen.fill((213, 109, 11))
+    screen.fill((255, 144, 0))
 
     pygame.draw.ellipse(screen, (0, 0, 0), ball_1)
-    pygame.draw.rect(screen, (176, 24, 0), rect)
+    pygame.draw.rect(screen, 'White', rect)
 
     ball_1.x += dx_1
     ball_1.y += dy_1
 
     if ball_1.y >= 400:
-        dy_1 = -dy_1
+        ball_1.x = 0
+        ball_1.y = 0
     if ball_1.y <= 0:
         dy_1 = abs(dy_1)
     if ball_1.x >= 300:
@@ -33,6 +34,7 @@ while not done:
 
     if ball_1.colliderect(rect):
         dy_1 = -dy_1
+        ball_1.y = rect.y - ball_1.height
 
     keys = pygame.key.get_pressed()
     if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and rect.x - 7 >= 0:
