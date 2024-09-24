@@ -47,19 +47,22 @@ while not done:
     if ball_1.x <= 0:
         dx_1 = abs(dx_1)
 
-    # if ball_1.colliderect(ball_2):
-    #     dy_1 = -dy_1
-    #     dx_1 = -dx_1
-    #     dy_2 = -dy_2
-    #     dx_2 = -dx_2
+    if ball_1.colliderect(rect):
+        dy_1 = -dy_1
+        dx_1 = -dx_1
+        # dy_2 = -dy_2
+        # dx_2 = -dx_2
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_d and rect.x + 50 <= 400 - 10:
                 screen.fill((0, 0, 0))
-
+                rect.x += 10
+            if event.key == pygame.K_a and rect.x - 10 >= 0:
+                screen.fill((0, 0, 0))
+                rect.x -= 10
 
     pygame.display.flip()
     clock.tick(60)
