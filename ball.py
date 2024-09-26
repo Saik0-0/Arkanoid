@@ -1,10 +1,11 @@
 import random
-
 import pygame
 
 pygame.init()
 screen = pygame.display.set_mode((300, 400))
 
+lives = 5
+font = pygame.font.Font(None, 36)
 
 ball_1 = pygame.Rect(0, 140, 20, 20)
 rect = pygame.Rect(0, 350, 50, 12)
@@ -33,6 +34,14 @@ clock = pygame.time.Clock()
 
 while not done:
     screen.fill((255, 144, 0))
+    if lives == 0:
+        done = True
+        print('Вы проиграли')
+    if len(blocks) == 0:
+        done = True
+        print('Вы выиграли')
+    text = font.render('Жизни: ' + str(lives), True, 'Black')
+    screen.blit(text, (0, 0))
 
     for block in blocks:
         pygame.draw.rect(screen, 'White', block)
@@ -59,7 +68,8 @@ while not done:
 
     if ball_1.y >= 400:
         ball_1.x = 0
-        ball_1.y = 110
+        ball_1.y = 140
+        lives -= 1
     if ball_1.y <= 0:
         dy_1 = abs(dy_1)
     if ball_1.x >= 300:
