@@ -23,6 +23,7 @@ bonus_ball_3 = pygame.Rect(150, 110, 15, 15)
 bonus_ball_3_active = False
 
 bonus_ball_4 = pygame.Rect(150, 110, 15, 15)
+bonus_4_active_time = 0
 bonus_ball_4_active = False
 
 blocks = []
@@ -92,12 +93,17 @@ while not done:
         elif bonus_ball_3.y > 400:
             bonus_ball_3_active = False
 
+    if pygame.time.get_ticks() - bonus_4_active_time > bonus_duration and ball.width == 14 and ball.height == 14:
+        ball.width = 20
+        ball.height = 20
+
     if bonus_ball_4_active:
-        pygame.draw.ellipse(screen, (180, 24, 9), bonus_ball_4)
+        pygame.draw.ellipse(screen, (93, 13, 19), bonus_ball_4)
         bonus_ball_4.y += 7
         if rect.colliderect(bonus_ball_4):
-            ball.width -= 8
-            ball.height -= 8
+            bonus_4_active_time = pygame.time.get_ticks()
+            ball.width = 14
+            ball.height = 14
             bonus_ball_4_active = False
         elif bonus_ball_4.y > 400:
             bonus_ball_4_active = False
@@ -109,6 +115,10 @@ while not done:
         ball.x = 0
         ball.y = 140
         lives -= 1
+        if dy > 0:
+            dy += 2
+        else:
+            dy -= 2
     if ball.y <= 0:
         dy = abs(dy)
     if ball.x >= 300:
@@ -122,7 +132,7 @@ while not done:
 
     for i in range(len(blocks)):
         if ball.colliderect(blocks[i]):
-            rnd = random.randint(1, 10)
+            rnd = random.randint(1, 8)
             if not bonus_ball_1_active and rnd == 1:
                 bonus_ball_1_active = True
                 bonus_ball_1.x = ball.x
