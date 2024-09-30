@@ -1,6 +1,29 @@
 import random
 import pygame
 
+
+def show_message(screen, text):
+    screen.fill((255, 144, 0))
+    message = font.render(text, True, (0, 0, 0))
+    screen.blit(message, (60, 150))
+    message_restart = font.render("Нажмите R для рестарта", True, (0, 0, 0))
+    screen.blit(message_restart, (5, 200))
+    pygame.display.flip()
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:  # Если нажали 'R', рестарт
+                    return True
+                if event.key == pygame.K_ESCAPE:  # Если нажали 'Esc', выход
+                    pygame.quit()
+                    exit()
+
+
 pygame.init()
 screen = pygame.display.set_mode((300, 400))
 
@@ -8,6 +31,7 @@ lives = 5
 font = pygame.font.Font(None, 36)
 
 ball = pygame.Rect(0, 140, 20, 20)
+dx, dy = 3, 9
 rect = pygame.Rect(0, 350, 50, 12)
 
 bonus_duration = 7000
@@ -36,20 +60,56 @@ for i in range(20):
         coord[1] += 25
     blocks.append(pygame.Rect(*coord, 50, 20))
 
-dx = 3
-dy = 9
-
 done = False
 clock = pygame.time.Clock()
 
 while not done:
     screen.fill((255, 144, 0))
     if lives == 0:
-        done = True
-        print('Вы проиграли')
+        if show_message(screen, 'Вы проиграли!'):
+            lives = 5
+            ball.x, ball.y = 0, 140
+            dx, dy = 3, 9
+            rect.x = 0
+            blocks = []
+            coord = [5, 25]
+            for i in range(20):
+                if i % 5 != 0:
+                    coord[0] += 60
+                elif i != 0:
+                    coord[0] = 5
+                    coord[1] += 25
+                blocks.append(pygame.Rect(*coord, 50, 20))
+            bonus_1_active_time = 0
+            bonus_ball_1_active = False
+            bonus_ball_2_active = False
+            bonus_ball_3_active = False
+            bonus_4_active_time = 0
+            bonus_ball_4_active = False
+            done = False
     if len(blocks) == 0:
-        done = True
-        print('Вы выиграли')
+        if show_message(screen, 'Вы выиграли!'):
+            lives = 5
+            ball.x, ball.y = 0, 140
+            dx, dy = 3, 9
+            rect.x = 0
+            blocks = []
+            coord = [5, 25]
+            for i in range(20):
+                if i % 5 != 0:
+                    coord[0] += 60
+                elif i != 0:
+                    coord[0] = 5
+                    coord[1] += 25
+                blocks.append(pygame.Rect(*coord, 50, 20))
+            bonus_1_active_time = 0
+            bonus_ball_1_active = False
+            bonus_ball_2_active = False
+            bonus_ball_3_active = False
+            bonus_4_active_time = 0
+            bonus_ball_4_active = False
+            done = False
+
     text = font.render('Жизни: ' + str(lives), True, 'Black')
     screen.blit(text, (0, 0))
 
